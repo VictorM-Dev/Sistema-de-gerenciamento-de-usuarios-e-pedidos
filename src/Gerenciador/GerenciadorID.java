@@ -35,7 +35,8 @@ public class GerenciadorID {
         for(int i=0; i<QUATIDADE_DE_IDS; i++){
             IDsDisponiveis.add(String.format("%s%04d",ID,i+1));
         }
-        Collections.shuffle(IDsDisponiveis);
+        // Linha comentada para testes
+        // Collections.shuffle(IDsDisponiveis);
     }
 
     public String cadastrarID(){

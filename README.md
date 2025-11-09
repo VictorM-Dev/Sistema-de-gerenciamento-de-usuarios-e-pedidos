@@ -51,7 +51,7 @@ GerenciadorID UsuariosID = getGerenciadorID(TipoID.USUARIO);
 O construtor privado da GerenciadorID se encarrega de chamar o método criarIDsDiponiveis.
 A classe GerenciadorID tem um relacionamento de uso da enum TipoID.
 
-**TipoID**
+**TipoID (package enumerações)**
 
 ```Java
 public enum TipoID {
@@ -78,6 +78,37 @@ public enum TipoID {
 
 O toString é sobrescrito para servir como prefixador dos IDs da classe GerenciadorID.
 
+**GerenciadorUniversalDePedidos**  
+  
+A classe que faz o gerenciamento de todos pedidos, é uma classe singleton padrão, o objeto dela é servir como
+pacote de funções de gerencimanto, para os objetos criados a partir da classe de marcação Cargo.  
+  
+O método mais usual dela é o getPedidoPorCodigo:
+
+```Java
+public Pedido getPedidoPorCodigo(String codigoPedido) {
+    Pedido novoPedido = verificaSeOPedidoExiste(codigoPedido);
+    if (novoPedido != null) {
+        return novoPedido;
+    }
+    return null;
+}
+```
+Em versões futuras, esse retorno null deverá ser substituído por uma exceção customizada, por exemplo PedidoNaoEncontradoException, para melhorar o tratamento de erros e a clareza da API.  
+  
+A instância desta classe é criada no momento que qualquer pedido é criado, ela está atrelada ao construtor do pedido.
+```Java
+public static GerenciadorUniversalDePedidos getGerenciadorUniversalDePedidos() {
+    if (instanciaUnica == null) {
+        instanciaUnica = new GerenciadorUniversalDePedidos();
+    }
+    return instanciaUnica;
+}
+```
+O método getGerenciadorUniversalDePedidos utiliza o padrão singleton tradicional.
+  
+Caso a instância ainda não exista, é criada com new GerenciadorUniversalDePedidos, garantindo que apenas uma instância do gerenciador exista durante toda a execução.
+  
 ### Sistema de pedidos (package Pedidos)
 
 O package Pedidos é responsável por gerenciar os pedidos realizados pelos clientes, incluindo os itens adicionados, o
@@ -86,6 +117,8 @@ valor total e o status de andamento do pedido.
 A classe item é um objeto concreto simples, serve apenas para modelar o objeto item.
 A classe Pedido, é um gerenciador de todos os itens adicionados a ele, utiliza a enum StatusPedido para controle do
 cliente.
+
+**StatusPedido (package enumerações)**
 
 ```Java
 public enum StatusPedido {
@@ -101,8 +134,21 @@ public enum StatusPedido {
 A classe Pedido, contém o array de itens, e controla o fluxo de dados da classe, adiciona e remove item, não consegue
 editar o item em si.
 
-Cada pedido pertence a um cliente, que mantém uma lista de seus pedidos. O cliente é o responsável por criar e gerenciar
-instâncias da classe Pedido.
+```Java
+public Pedido(String codigoPedido) {
+    setCodigoPedido(codigoPedido);
+    setStatusPedido(StatusPedido.CARRINHO);
+
+    // Assim que um pedido é criado, ele cria a instância única do Gerenciador
+    GerenciadorUniversalDePedidos gerenciadorUniversalDePedidos = GerenciadorUniversalDePedidos.getGerenciadorUniversalDePedidos();
+    gerenciadorUniversalDePedidos.adicionarPedidoAoSistema(this);
+}
+```
+
+Note que assim que um pedido é criado, ele é adicionado ao gerenciador universal de pedidos, que se comporta como uma classe singleton.
+
+Cada instância de Pedido adiciona automaticamente uma referência de si mesma ao GerenciadorUniversalDePedidos, garantindo que todos os 
+pedidos criados sejam rastreados globalmente.
 
 A edição da quantidade de um item específico está no sistema de servico.
 Note o funcionamento do método de adição de itens:

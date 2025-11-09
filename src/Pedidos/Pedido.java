@@ -1,5 +1,6 @@
 package Pedidos;
 
+import Gerenciador.GerenciadorUniversalDePedidos;
 import Tipos.StatusPedido;
 
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.HashMap;
 
 public class Pedido {
     private ArrayList<Item> meusItens = new ArrayList<>();
+
+    // Utilização de HashMap para manter a quantidade do item no pedido
     private HashMap<String, Integer> produtosNoPedido = new HashMap<>();
 
     private StatusPedido statusPedido;
@@ -16,6 +19,10 @@ public class Pedido {
     public Pedido(String codigoPedido) {
         setCodigoPedido(codigoPedido);
         setStatusPedido(StatusPedido.CARRINHO);
+
+        // Assim que um pedido é criado, ele cria a instância única do Gerenciador
+        GerenciadorUniversalDePedidos gerenciadorUniversalDePedidos = GerenciadorUniversalDePedidos.getGerenciadorUniversalDePedidos();
+        gerenciadorUniversalDePedidos.adicionarPedidoAoSistema(this);
     }
 
     public double getValorTotal() {
@@ -26,16 +33,16 @@ public class Pedido {
         return statusPedido;
     }
 
-    public void setStatusPedido(StatusPedido statusPedido){
-        this.statusPedido=statusPedido;
+    public void setStatusPedido(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
     }
 
     public String getCodigoPedido() {
         return codigoPedido;
     }
 
-    private void setCodigoPedido(String codigoPedido){
-        this.codigoPedido=codigoPedido;
+    private void setCodigoPedido(String codigoPedido) {
+        this.codigoPedido = codigoPedido;
     }
 
     public void adicionarItem(Item item, int quantidade) {
@@ -43,6 +50,7 @@ public class Pedido {
         if (!meusItens.contains(item)) {
             meusItens.add(item);
         }
+        // O getOrDefault transforma o null em 0 se o item não existir por inconsistência
         produtosNoPedido.put(item.getCodigoDoProduto(), produtosNoPedido.getOrDefault(item.getCodigoDoProduto(), 0) + quantidade);
         atualizaPedido();
     }
@@ -89,8 +97,8 @@ public class Pedido {
         return quantidadeDeItens;
     }
 
-    public void exibirItensDoPedido(){
-        for(Item item: meusItens){
+    public void exibirItensDoPedido() {
+        for (Item item : meusItens) {
             System.out.println(item);
             System.out.printf("Quantidade: %d\n", produtosNoPedido.getOrDefault(item.getCodigoDoProduto(), 0));
         }
