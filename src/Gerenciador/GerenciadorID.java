@@ -1,6 +1,7 @@
 package Gerenciador;
 
 import Tipos.TipoID;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
