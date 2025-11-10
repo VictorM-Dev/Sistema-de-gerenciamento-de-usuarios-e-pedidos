@@ -14,10 +14,10 @@ public class Pedido {
 
     private StatusPedido statusPedido;
     private double valorTotal;
-    private String codigoPedido;
+    private final String codigoPedido;
 
     public Pedido(String codigoPedido) {
-        setCodigoPedido(codigoPedido);
+        this.codigoPedido = codigoPedido;
         setStatusPedido(StatusPedido.CARRINHO);
 
         // Assim que um pedido é criado, ele cria a instância única do Gerenciador
@@ -39,10 +39,6 @@ public class Pedido {
 
     public String getCodigoPedido() {
         return codigoPedido;
-    }
-
-    private void setCodigoPedido(String codigoPedido) {
-        this.codigoPedido = codigoPedido;
     }
 
     public void adicionarItem(Item item, int quantidade) {

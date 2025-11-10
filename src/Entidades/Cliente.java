@@ -1,4 +1,8 @@
 package Entidades;
 
-public class Cliente extends Funcionario{
+public class Cliente extends Usuario{
+    @Override
+    public void exibirMenu(){};
+    @Override
+    public void funcionalidade(int opcao){};
 }

@@ -1,14 +1,14 @@
-## Sistema de gerenciamento de usuários e pedidos - SGUP
+# Sistema de gerenciamento de usuários e pedidos - SGUP
 
 Projeto que visa a criação de um sistema real de gestão com unicidade, histórico global e separação clara de entidade e
 funções.
 
-### Sistemas de gerenciamento (package Gerenciador)
+## Sistemas de gerenciamento (package Gerenciador)
 
 O package Gerenciador é responsável por gerenciar todos os 3 tipos de ID, o sistema universal de pedidos,
 sistema universal de itens e sistema universal de funcionários.
 
-**GerenciadorID**
+### GerenciadorID
 
 Classe que garante a unicidade e universalidade dos IDs usados ao decorrer do projeto. Ela incorpora um padrão singleton
 adaptado para múltiplas instâncias com distinção de enumeração.
@@ -51,7 +51,7 @@ GerenciadorID UsuariosID = getGerenciadorID(TipoID.USUARIO);
 O construtor privado da GerenciadorID se encarrega de chamar o método criarIDsDiponiveis.
 A classe GerenciadorID tem um relacionamento de uso da enum TipoID.
 
-**TipoID (package enumerações)**
+#### TipoID (package enumerações)
 
 ```Java
 public enum TipoID {
@@ -78,7 +78,7 @@ public enum TipoID {
 
 O toString é sobrescrito para servir como prefixador dos IDs da classe GerenciadorID.
 
-**GerenciadorUniversalDePedidos**  
+### GerenciadorUniversalDePedidos  
   
 A classe que faz o gerenciamento de todos pedidos, é uma classe singleton padrão, o objeto dela é servir como
 pacote de funções de gerencimanto, para os objetos criados a partir da classe de marcação Cargo.  
@@ -107,9 +107,19 @@ public static GerenciadorUniversalDePedidos getGerenciadorUniversalDePedidos() {
 ```
 O método getGerenciadorUniversalDePedidos utiliza o padrão singleton tradicional.
   
-Caso a instância ainda não exista, é criada com new GerenciadorUniversalDePedidos, garantindo que apenas uma instância do gerenciador exista durante toda a execução.
+Caso a instância ainda não exista, é criada com new GerenciadorUniversalDePedidos, garantindo que apenas uma instância do gerenciador exista durante toda a execução.  
+
+Note que o GerenciadorUniversalDePedidos é configurado para armazenar todos os pedidos independente do StatusPedido. Para um balanço geral mais realístico, deve ser feito
+a adição do pedido apenas quando seu StatusPedido for de ENTREGUE. Dessa forma, armazenamos apenas vendas realizadas.  
   
-### Sistema de pedidos (package Pedidos)
+Para fazer essa implementação, é necessário alterar o construtor da classe Pedido.
+
+**GerenciadorUniversalDeItens**  
+  
+A classe funciona similar a classe anterior que controla todo o histórico de pedidos. Com uma diferença sútil na adição automática do item ao ArrayList dos itens. Que sempre será implementada
+diretamente dentro do construtor da classe Item.
+
+## Sistema de pedidos (package Pedidos)
 
 O package Pedidos é responsável por gerenciar os pedidos realizados pelos clientes, incluindo os itens adicionados, o
 valor total e o status de andamento do pedido.
@@ -118,7 +128,7 @@ A classe item é um objeto concreto simples, serve apenas para modelar o objeto 
 A classe Pedido, é um gerenciador de todos os itens adicionados a ele, utiliza a enum StatusPedido para controle do
 cliente.
 
-**StatusPedido (package enumerações)**
+#### StatusPedido (package enumerações)
 
 ```Java
 public enum StatusPedido {
@@ -129,14 +139,14 @@ public enum StatusPedido {
 }
 ```
 
-**Pedido**
+### Pedido
 
 A classe Pedido, contém o array de itens, e controla o fluxo de dados da classe, adiciona e remove item, não consegue
 editar o item em si.
 
 ```Java
 public Pedido(String codigoPedido) {
-    setCodigoPedido(codigoPedido);
+    this.codigoPedido = codigoPedido;
     setStatusPedido(StatusPedido.CARRINHO);
 
     // Assim que um pedido é criado, ele cria a instância única do Gerenciador
@@ -213,3 +223,8 @@ public Pedido(String codigoPedido) {
     setStatusPedido(StatusPedido.CARRINHO);
 }
  ```
+## Sistema de Entidades (package entidades)  
+
+A classe Usuario é uma classe abstrata, para implementar a interface SistemaDeMenus, que é usada nas classes que herdam de Usuario.  
+  
+Assim como itens ou pedidos, usuário tem um id próprio que é fornecido utilizando o GerenciadorID. É uma classe de criaçaõ de um objeto simples.

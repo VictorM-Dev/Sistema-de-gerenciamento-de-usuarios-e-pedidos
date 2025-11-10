@@ -1,14 +1,20 @@
 package Pedidos;
 
+import Gerenciador.GerenciadorUniversalDeItens;
+
 public class Item {
     private String nomeDoProduto;
     private double precoDoProduto;
-    private String codigoDoProduto;
+    private final String codigoDoProduto;
 
     public Item(String nomeDoProduto, double precoDoProduto, String codigoDoProduto) {
         this.nomeDoProduto = nomeDoProduto;
         setPrecoDoProduto(precoDoProduto);
         this.codigoDoProduto = codigoDoProduto;
+
+        // Assim que um item é criado é automaticamente adicionado ao Gerenciador de Itens
+        GerenciadorUniversalDeItens gerenciadorUniversalDeItens = GerenciadorUniversalDeItens.getGerenciadorUniversalDeItens();
+        gerenciadorUniversalDeItens.adicionarItemAoSistema(this);
     }
 
     public String getNomeDoProduto() {
@@ -31,15 +37,8 @@ public class Item {
         return codigoDoProduto;
     }
 
-    private void setCodigoDoProduto(String codigoDoProduto) {
-        this.codigoDoProduto = codigoDoProduto;
-    }
-
     @Override
-    public String toString(){
-        return String.format(
-                "Nome do produto: %s\nPreço do Produto: %.2f\nCódigo do produto: %s",
-                nomeDoProduto, precoDoProduto, codigoDoProduto
-        );
+    public String toString() {
+        return String.format("Nome do produto: %s\nPreço do Produto: %.2f\nCódigo do produto: %s", nomeDoProduto, precoDoProduto, codigoDoProduto);
     }
 }
