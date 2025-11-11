@@ -17,14 +17,13 @@ public class GerenciadorUniversalDeItens {
         return instanciaUnica;
     }
 
-    public boolean adicionarItemAoSistema(Item novoItem) {
+    public void adicionarItemAoSistema(Item novoItem) {
         for(Item item: todosOsItens){
             if(item.getCodigoDoProduto().equals(novoItem.getCodigoDoProduto())){
-                return false;
+                return;
             }
         }
         todosOsItens.add(novoItem);
-        return true;
     }
 
     public void removerItemDoSistema(String codigoDoProduto) {
