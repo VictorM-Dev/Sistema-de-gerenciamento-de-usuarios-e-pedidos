@@ -142,7 +142,10 @@ public enum StatusPedido {
 ### Pedido
 
 A classe Pedido, contém o array de itens, e controla o fluxo de dados da classe, adiciona e remove item, não consegue
-editar o item em si.
+editar o item em si.  
+  
+Em versões futuras do código, para melhor modelagem, as funções da classe pedido devem ser postas em uma nova classe.
+Como por exemplo, uma classe manipuladora de pedidos, para que pedido possa ser uma classe limpa e sólida, sem violar o princípio de repsonsabilidade.
 
 ```Java
 public Pedido(String codigoPedido) {
@@ -165,30 +168,34 @@ Note o funcionamento do método de adição de itens:
 
 ```Java
 public void adicionarItem(Item item, int quantidade) {
-    if (quantidade <= 0) return;
-    if (!meusItens.contains(item)) {
-        meusItens.add(item);
-    }
-    produtosNoPedido.put(item.getCodigoDoProduto(), produtosNoPedido.getOrDefault(item.getCodigoDoProduto(), 0) + quantidade);
+    if(quantidade == 0) return;
+
+    Item novoItem = verificaSeItemExiste(item.getCodigoDoProduto());
+    if(novoItem==null) return;
+
+    meusItens.add(item);
+    controleDeProdutosNoPedido(item, quantidade);
+    
     atualizaPedido();
 }
 ```
 
-Se por alguma razão a quantidade for 0, não é adicionado o pedido.  
+Se por alguma razão a quantidade for 0, não é adicionado o pedido.    
+
 Se a quantidade for maior que 0, primeiro é perguntado se o pedido já existe no carrinho, se o pedido já existir
 não é adicionado, é apenas somado no HashMap produtosNoPedido.  
-Por fim, o método chama o método atualiza pedido que calcula a quantidade de itens, e remove o item se sua quantidade
-for 0.
+
+o método controleDeProdutosNoPedido recebe o item e quantidade, se a quantidade for menor que 0 ele chama o método
+de remover pedido da classe, e não deixa que exista pedidos com quantidades incoerentes.
 
 ```Java
 public void atualizaPedido() {
     calculaQuantidadeDeItens();
-    meusItens.removeIf(item -> produtosNoPedido.getOrDefault(item.getCodigoDoProduto(), 0) == 0);
     calculaValor();
 }
 ```
 
-Por segurança é utilizado o getOrDefault, para caso o item não exista no pedido em casos de inconsistências.  
+O método atualizaPedido, controla a quantidade de itens e calcula o valor do pedido.  
 
 É sobrescrito o método toString padrão:
 

@@ -19,10 +19,14 @@ public class GerenciadorUniversalDePedidos {
         return instanciaUnica;
     }
 
-    public void adicionarPedidoAoSistema(Pedido pedido) {
-        if (!todosOsPedidos.contains(pedido)) {
-            todosOsPedidos.add(pedido);
+    public boolean adicionarPedidoAoSistema(Pedido novoPedido) {
+        for (Pedido pedido : todosOsPedidos) {
+            if (!pedido.getCodigoPedido().equals(novoPedido.getCodigoPedido())) {
+                return false;
+            }
         }
+        todosOsPedidos.add(novoPedido);
+        return true;
     }
 
     public void calcularBalancoGeral() {

@@ -42,15 +42,23 @@ public class Pedido {
     }
 
     public void adicionarItem(Item item, int quantidade) {
-        if (quantidade <= 0) return;
-        if (!meusItens.contains(item)) {
-            meusItens.add(item);
-        }
-        // O getOrDefault transforma o null em 0 se o item não existir por inconsistência
-        produtosNoPedido.put(item.getCodigoDoProduto(), produtosNoPedido.getOrDefault(item.getCodigoDoProduto(), 0) + quantidade);
+        if(quantidade == 0) return;
+
+        Item novoItem = verificaSeItemExiste(item.getCodigoDoProduto());
+        if(novoItem==null) return;
+
+        meusItens.add(item);
+        controleDeProdutosNoPedido(item, quantidade);
+
         atualizaPedido();
     }
 
+    private void controleDeProdutosNoPedido(Item item, int quantidade){
+        produtosNoPedido.put(item.getCodigoDoProduto(), produtosNoPedido.getOrDefault(item.getCodigoDoProduto(), 0) + quantidade);
+        if(produtosNoPedido.get(item.getCodigoDoProduto()) < 0){
+            removerItem(item.getCodigoDoProduto());
+        }
+    }
 
     public boolean removerItem(String codigoDoProduto) {
         Item itemParaRemover = verificaSeItemExiste(codigoDoProduto);
@@ -80,8 +88,6 @@ public class Pedido {
 
     public void atualizaPedido() {
         calculaQuantidadeDeItens();
-        //Remove o item se a quantidade for 0
-        meusItens.removeIf(item -> produtosNoPedido.getOrDefault(item.getCodigoDoProduto(), 0) == 0);
         calculaValor();
     }
 
