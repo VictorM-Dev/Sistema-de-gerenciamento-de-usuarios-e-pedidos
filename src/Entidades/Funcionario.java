@@ -33,8 +33,4 @@ public class Funcionario extends Usuario{
     public void alterarCargo(Cargo cargo){
         this.cargo = cargo;
     }
-    @Override
-    public void exibirMenu(){};
-    @Override
-    public void funcionalidade(int opcao){};
 }

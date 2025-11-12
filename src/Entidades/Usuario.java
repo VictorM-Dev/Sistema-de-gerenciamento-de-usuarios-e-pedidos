@@ -1,6 +1,6 @@
 package Entidades;
 
-public abstract class Usuario implements SistemaDeMenus{
+public abstract class Usuario {
     private final String idUsuario;
     private String nomeUsuario;
 
