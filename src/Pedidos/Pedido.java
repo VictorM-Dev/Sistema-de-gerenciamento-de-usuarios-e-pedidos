@@ -45,7 +45,7 @@ public class Pedido {
         if(quantidade == 0) return;
 
         Item novoItem = verificaSeItemExiste(item.getCodigoDoProduto());
-        if(novoItem==null) return;
+        if(novoItem!=null) return;
 
         meusItens.add(item);
         controleDeProdutosNoPedido(item, quantidade);

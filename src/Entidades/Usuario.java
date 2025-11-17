@@ -4,8 +4,9 @@ public abstract class Usuario {
     private final String idUsuario;
     private String nomeUsuario;
 
-    public Usuario(String idUsuario){
+    public Usuario(String idUsuario, String nomeUsuario){
         this.idUsuario = idUsuario;
+        this.nomeUsuario=nomeUsuario;
     }
 
     public String getIdUsuario() {

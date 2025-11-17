@@ -335,7 +335,21 @@ A classe Usuario é uma classe abstrata, para implementar a interface SistemaDeM
 de Usuario.
 
 Assim como itens ou pedidos, usuário tem um id próprio que é fornecido utilizando o GerenciadorID. É uma classe de
-criaçaõ de um objeto simples.
+criaçaõ de um objeto simples.  
+  
+Também como itens ou pedidos, nas classes que herdam de usuários o construtor tem auto adição de usuário ao GerenciadorUsuario.
+```Java
+public Funcionario(String nomeFuncionario, String login, String senha, Cargo cargo, String ID){
+    super(ID, nomeFuncionario);
+    this.login=login;
+    this.senha=senha;
+    this.cargo=cargo;
+    
+    // Adição automática
+    GerenciadorUsuarios gerenciadorUsuarios = GerenciadorUsuarios.getGerenciadorUsuarios();
+    gerenciadorUsuarios.cadastrarUsuario(this);
+}
+```
 
 ### Cliente
 
@@ -366,3 +380,29 @@ Funcionario é uma classe de entidade simples e concreta, com uma observação p
 private Cargo cargo;
 ```
 Que utilizará funções do seu cargo que é definido no package Cargos.
+#### Cargo (package tipos)
+**Função:**  Unicidade de Tipos de ID.  
+**Pattern:** enum.
+**Usada por:** Funcionario.
+```Java
+public enum Cargo {
+    ATENDENTE,
+    COORDENADOR
+}
+```
+## Sistema de Cargos (package Cargo)
+O sistema de cargos visa controlar o que cada cargo pode fazer.
+### Atendente
+**Função:** Controla tudo relacionado a itens e clientes.
+**Pattern:** Singleton padrão.
+**Usa:** Cargo, GerenciadorUsuarios, GerenciadorUniversalDeItens.
+
+```Java
+public Item getItemPorCodigo(String ItemID) {
+    return gerenciadorUniversalDeItens.getItemPorCodigo(ItemID);
+}
+```
+
+O método acima está funcionando também para verificação de existência, se retornar null não existe o item, 
+serve para adicionar item ao pedido do cliente, já que isso seria feito por um atendente, 
+funcionando como um intermediário entre o sistema e o usuário atendente.

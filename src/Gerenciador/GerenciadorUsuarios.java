@@ -1,8 +1,8 @@
 package Gerenciador;
 
-import Cargos.Cargo;
 import Entidades.*;
 import Entidades.Usuario;
+import Tipos.Cargo;
 import Tipos.StatusCliente;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class GerenciadorUsuarios {
     private GerenciadorUsuarios(){};
 
     public static GerenciadorUsuarios getGerenciadorUsuarios(){
-        if(instanciaUnica != null){
+        if(instanciaUnica == null){
             instanciaUnica = new GerenciadorUsuarios();
         }
         return instanciaUnica;
@@ -27,7 +27,7 @@ public class GerenciadorUsuarios {
         }
     }
 
-    private Usuario verificaSeOUsuarioExiste(String nomeUsuario){
+    public Usuario verificaSeOUsuarioExiste(String nomeUsuario){
         for(Usuario usuario : usuariosCadastrados){
             if(usuario.getNomeUsuario().equals(nomeUsuario)){
                 return usuario;

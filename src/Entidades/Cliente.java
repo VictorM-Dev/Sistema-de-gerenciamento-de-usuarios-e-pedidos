@@ -1,5 +1,6 @@
 package Entidades;
 
+import Gerenciador.GerenciadorUsuarios;
 import Pedidos.Pedido;
 import Tipos.StatusCliente;
 import Tipos.StatusPedido;
@@ -12,8 +13,10 @@ public class Cliente extends Usuario {
     private String endereco;
     private StatusCliente statusCliente;
 
-    public Cliente(String nomeDoCliente) {
-        super(nomeDoCliente);
+    public Cliente(String nomeDoCliente, String ID) {
+        super(ID, nomeDoCliente);
+        GerenciadorUsuarios gerenciadorUsuarios = GerenciadorUsuarios.getGerenciadorUsuarios();
+        gerenciadorUsuarios.cadastrarUsuario(this);
     }
 
     public void setEndereco(String endereco) {
@@ -26,6 +29,10 @@ public class Cliente extends Usuario {
 
     public Pedido getMeuPedido() {
         return meuPedido;
+    }
+
+    public ArrayList<Pedido> getMeusPedidos() {
+        return meusPedidos;
     }
 
     public void alteraStatusCliente(StatusCliente statusCliente) {
