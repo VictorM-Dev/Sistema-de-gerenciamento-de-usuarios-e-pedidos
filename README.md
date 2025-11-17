@@ -406,3 +406,29 @@ public Item getItemPorCodigo(String ItemID) {
 O método acima está funcionando também para verificação de existência, se retornar null não existe o item, 
 serve para adicionar item ao pedido do cliente, já que isso seria feito por um atendente, 
 funcionando como um intermediário entre o sistema e o usuário atendente.
+
+### Coordenador
+**Função:** Controla tudo relacionado a usuarios.
+**Pattern:** Singleton padrão.
+**Usa:** Cargo, GerenciadorUsuarios, GerenciadorUniversalDePedidos.
+```Java
+public void verTodosOsClientes() {
+    ArrayList<Usuario> todosOsUsuarios = gerenciadorUsuarios.getUsuariosCadastrados();
+    for (Usuario usuario : todosOsUsuarios) {
+        if (usuario instanceof Cliente) {
+            System.out.println(usuario);
+        }
+    }
+}
+
+public void verTodosOsFuncionarios() {
+    ArrayList<Usuario> todosOsUsuarios = gerenciadorUsuarios.getUsuariosCadastrados();
+    for (Usuario usuario : todosOsUsuarios) {
+        if (usuario instanceof Funcionario) {
+            System.out.println(usuario);
+        }
+    }
+}
+```
+Os métodos acima tem lógica idêntica, poderia ser feito um único método que recebe o tipo. Mas a implementação foi essa para diferenciar função,
+e facilitar a lógica do Service.

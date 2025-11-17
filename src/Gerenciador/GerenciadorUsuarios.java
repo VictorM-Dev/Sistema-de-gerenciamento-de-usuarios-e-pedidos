@@ -11,43 +11,47 @@ public class GerenciadorUsuarios {
     private static GerenciadorUsuarios instanciaUnica;
     private ArrayList<Usuario> usuariosCadastrados = new ArrayList<>();
 
-    private GerenciadorUsuarios(){};
+    private GerenciadorUsuarios() {};
 
-    public static GerenciadorUsuarios getGerenciadorUsuarios(){
-        if(instanciaUnica == null){
+    public static GerenciadorUsuarios getGerenciadorUsuarios() {
+        if (instanciaUnica == null) {
             instanciaUnica = new GerenciadorUsuarios();
         }
         return instanciaUnica;
     }
 
-    public void cadastrarUsuario(Usuario usuario){
+    public ArrayList<Usuario> getUsuariosCadastrados() {
+        return usuariosCadastrados;
+    }
+
+    public void cadastrarUsuario(Usuario usuario) {
         Usuario novoUsuario = verificaSeOUsuarioExiste(usuario.getNomeUsuario());
-        if(novoUsuario==null){
+        if (novoUsuario == null) {
             usuariosCadastrados.add(usuario);
         }
     }
 
-    public Usuario verificaSeOUsuarioExiste(String nomeUsuario){
-        for(Usuario usuario : usuariosCadastrados){
-            if(usuario.getNomeUsuario().equals(nomeUsuario)){
+    public Usuario verificaSeOUsuarioExiste(String nomeUsuario) {
+        for (Usuario usuario : usuariosCadastrados) {
+            if (usuario.getNomeUsuario().equals(nomeUsuario)) {
                 return usuario;
             }
         }
         return null;
     }
 
-    public boolean removerFuncionario(String idUsuario){
+    public boolean removerFuncionario(String idUsuario) {
         Usuario novoUsuario = verificaSeOUsuarioExiste(idUsuario);
-        if(novoUsuario != null){
+        if (novoUsuario != null) {
             usuariosCadastrados.remove(novoUsuario);
             return true;
         }
         return false;
     }
 
-    public boolean editarUsuario(String idUsuario, Cargo novoCargo){
+    public boolean editarUsuario(String idUsuario, Cargo novoCargo) {
         Usuario funcionario = verificaSeOUsuarioExiste(idUsuario);
-        if(funcionario instanceof Funcionario){
+        if (funcionario instanceof Funcionario) {
             Funcionario novoFuncionario = (Funcionario) funcionario;
             novoFuncionario.alterarCargo(novoCargo);
             return true;
@@ -55,13 +59,33 @@ public class GerenciadorUsuarios {
         return false;
     }
 
-    public boolean editarUsuario(String idUsuario, StatusCliente statusCliente){
+    public boolean editarUsuario(String idUsuario, StatusCliente statusCliente) {
         Usuario cliente = verificaSeOUsuarioExiste(idUsuario);
-        if(cliente instanceof Cliente){
+        if (cliente instanceof Cliente) {
             Cliente novoCliente = (Cliente) cliente;
             novoCliente.alteraStatusCliente(statusCliente);
             return true;
         }
         return false;
+    }
+
+    public boolean autenticar(String login, String senha) {
+        for (Usuario usuario : usuariosCadastrados) {
+            if (usuario.getIdUsuario().equals(login)) {
+                if (usuario.getSenha().equals(senha)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Usuario getUsuarioPorID(String ID){
+        for(Usuario usuario: usuariosCadastrados){
+            if(usuario.getIdUsuario().equals(ID)){
+                return usuario;
+            }
+        }
+        return null;
     }
 }

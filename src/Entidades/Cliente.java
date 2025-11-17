@@ -13,8 +13,8 @@ public class Cliente extends Usuario {
     private String endereco;
     private StatusCliente statusCliente;
 
-    public Cliente(String nomeDoCliente, String ID) {
-        super(ID, nomeDoCliente);
+    public Cliente(String nomeDoCliente, String ID, String senha) {
+        super(ID, nomeDoCliente, senha);
         GerenciadorUsuarios gerenciadorUsuarios = GerenciadorUsuarios.getGerenciadorUsuarios();
         gerenciadorUsuarios.cadastrarUsuario(this);
     }
@@ -74,5 +74,10 @@ public class Cliente extends Usuario {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString(){
+        return String.format("Nome: %-15s | Cliente: %-15s Status: %-15s", getNomeUsuario(), getIdUsuario(), getStatusCliente());
     }
 }

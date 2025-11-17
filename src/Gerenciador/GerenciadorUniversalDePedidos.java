@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GerenciadorUniversalDePedidos {
     public static GerenciadorUniversalDePedidos instanciaUnica;
     public ArrayList<Pedido> todosOsPedidos = new ArrayList<>();
-    public double balancoGeral;
+    private double balancoGeral;
 
     private GerenciadorUniversalDePedidos() {};
 
@@ -37,6 +37,10 @@ public class GerenciadorUniversalDePedidos {
 
     public double getBalancoGeral() {
         return balancoGeral;
+    }
+
+    public ArrayList<Pedido> getTodosOsPedidos() {
+        return todosOsPedidos;
     }
 
     // Se for null, exiba que não é possível encontrar o pedido
