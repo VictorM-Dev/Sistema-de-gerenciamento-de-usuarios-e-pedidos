@@ -1,12 +1,8 @@
 package Service;
 
-import Entidades.Cliente;
-import Entidades.Funcionario;
-import Entidades.Usuario;
-import Gerenciador.GerenciadorID;
-import Gerenciador.GerenciadorUsuarios;
-import Tipos.Cargo;
-import Tipos.TipoID;
+import Entidades.*;
+import Gerenciador.*;
+import Tipos.*;
 
 import java.util.Scanner;
 
